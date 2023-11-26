@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=EB+Garamond">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; 
+      background-color: #ede9dd;
+      overflow: hidden; /*kryvei scrollbar*/
+    }
+
+    #quote-container {
+    font-family: 'Eb Garamond', serif;
+    font-size: 35px;
+    padding: 20px;
+    text-align: center;
+    }
+  </style>
+  <title>Tsitata</title>
+</head>
+<body>
+  <div id="quote-container"></div>
+
+  <script>
+    const quotes = [
+"ό,τι δεν με σκοτώνει με κάνει πιο δυνατό",
+"ουκ εν τω πολλώ το ευ, αλλ’ εν τω ευ το πολύ",
+"καλύτερα ένα άθλιο τέλος παρά μια αθλιότητα χωρίς τέλος",
+"εν οίδα ότι ουδέν οίδα",
+"να συγχωρείς τους εχθρούς σου. Αυτό τους κάνει να σε μισούν περισσότερο",
+"ο,τι δεν λύεται κόπτεται",
+"μηδένα προ του τέλους μακάριζε",
+"τα αγαθά κόποις κτώνται",
+"οποιος ελεύθερα συλλογάται, συλλογάται καλά",
+"το δις εξαμαρτείν τ’ αυτόν ουκ ανδρός σοφού",
+"αλίμονο στη χώρα που έχει ανάγκη από ήρωες",
+"να ζει κανείς ή να μη ζει; ιδού η απορία",
+"Στους γονείς οφείλομεν το ζην, στους δε διδασκάλους το ευ ζην",
+"Αρχή ήμισυ παντός",
+"Πάντων χρημάτων μέτρον άνθρωπος",
+"Συν Αθηνά και χείρα κίνει",
+"Πείσας λαβέ, μη βιασάμενος",
+"Άνδρες γαρ πόλιος πύργος",
+"Αρχή άνδρα δείκνυσι",
+"Πάταξον μεν, άκουσον δε",
+"Το εύδαιμον το ελεύθερον, το δ’ ελεύθερον το εύψυχον",
+"Μετά πόνου η μάθησις",
+"Αισχρόν τε μοχθείν μή θέλειν νεανίαν",
+"Πνίγεσαι όχι αν πέσεις στο ποτάμι, αλλά αν παραμείνεις βυθισμένος σ’ αυτό",
+
+    ];
+
+    const names = [
+"Νίτσε",
+"Αριστοτέλης",
+"Μάρξ",
+"Σωκράτης",
+"Όσκαρ Ουάιλντ",
+"Μέγας Αλέξανδρος",
+"Σόλων",
+"Ρήγας Φεραίος",
+"Μένανδρος",
+"Μπρεχτ",
+"Σαίξπηρ",
+"Πλατων",
+"Αίσωπος",
+"Δημοσθένης",
+"Θεμιστοκλής",
+"Αλκαίος",
+"Αντισθένης",
+"Σοφοκλής",
+"Ευριπίδης",
+"Πάουλο Κοέλιο",
+    ];
+
+
+    const minWordsToShow = 3;
+    const maxWordsToShow = 7;
+    let combinedQuote = "";
+
+    function capitalizeFirstLetter(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+
+
+
+   function generateCombinedQuote() {
+  combinedQuote = "";
+  const wordsToShow = Math.floor(Math.random() * (maxWordsToShow - minWordsToShow + 1)) + minWordsToShow;
+  
+  for (let i = 0; i < wordsToShow; i++) {
+    const parts = quotes[Math.floor(Math.random() * quotes.length)].split(" ");
+    const randomWord = capitalizeFirstLetter(parts[Math.floor(Math.random() * parts.length)]);
+    combinedQuote += randomWord + " ";
+  }
+  
+  combinedQuote = combinedQuote.trim();
+  combinedQuote += " - " + names[Math.floor(Math.random() * names.length)];
+  updateQuote();
+}
+
+    function updateQuote() {
+      const quoteContainer = document.getElementById("quote-container");
+      quoteContainer.innerText = combinedQuote;
+    }
+
+    function mousePressed() {
+      generateCombinedQuote();
+      updateQuote();
+    }
+
+    window.onload = function() {
+      generateCombinedQuote();
+      
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+      document.body.addEventListener("click", mousePressed);
+      document.body.addEventListener("wheel", generateCombinedQuote);
+    });
+  </script>
+</body>
+</html>
