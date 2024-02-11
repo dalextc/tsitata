@@ -3,57 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=EB+Garamond">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh; 
-      background-color: #ede9dd;
-      overflow: hidden; /*kryvei scrollbar*/
-    }
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    #quote-container {
-    font-family: 'Eb Garamond', serif;
-    font-size: 35px;
-    padding: 20px;
-    text-align: center;
-    }
+  <style>
+#screenshotButton {
+			width: 60px;
+			height:60px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 25%;
+            cursor: pointer;
+        }
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  background-color: #ede9dd;
+  overflow: hidden;
+  margin: 0; /* Remove default body margin */
+}
+
+.container {
+  box-sizing: border-box;
+}
+
+#image-container {
+  width: 95vw; /* Cover 95% of the screen width */
+  height: 95vw; /* Maintain square aspect ratio */
+  max-width: 512px; /* Limit to 512px for larger screens */
+  max-height: 512px; /* Limit to 512px for larger screens */
+  padding: 0; /* No padding */
+  background-color: #fff; /* Optional: Add a background color */
+  position: relative; /* Required for absolute positioning of the text */
+}
+
+#background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the entire container */
+}
+
+#quote-container {
+  font-family: 'Eb Garamond', serif;
+  text-align: center;
+  width: 80%; /* Cover 80% of the screen width */
+  max-width: 450px; /* Limit to 450px for larger screens */
+  max-height: 450px; /* Limit to 450px for larger screens */
+  padding: 2.5%; /* Padding as a percentage of screen width */
+  position: absolute; /* Position absolutely within the image container */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust for centering */
+  background-color: rgba(255, 255, 255, 0.8); /* Optional: Add a semi-transparent background color */
+}
+
+@media screen and (max-width: 512px) {
+  #quote-container {
+    font-size: 6vw; /* Smaller screens (400 pixels and below) */
+	min-font-size: 5wv;
+  }
+}
+
+@media screen and (min-width: 513px) {
+  #quote-container {
+    font-size: 3vw; /* Screens between 400px and 1280px */
+	min-font-size: 2.5wv;
+  }
+}
+
+@media screen and (min-width: 1281px) {
+  #quote-container {
+    font-size: 2vw; /* Screens larger than 1280px */
+	min-font-size: 1.2wv;
+	padding: 1.5%;
+	background-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
   </style>
   <title>Tsitata</title>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
-  <div id="quote-container"></div>
+
+<button id="screenshotButton">
+<i class="fas fa-camera fa-2x"></i>
+</button>
+
+<div id="mainapp">
+  <div id="image-container" class="container">
+    <img id="background-image" src="" alt="Background Image">
+  </div>
+
+  <div id="quote-container" class="container"></div>
+</div>
 
   <script>
-    const quotes = [
-"ό,τι δεν με σκοτώνει με κάνει πιο δυνατό",
-"ουκ εν τω πολλώ το ευ, αλλ’ εν τω ευ το πολύ",
-"καλύτερα ένα άθλιο τέλος παρά μια αθλιότητα χωρίς τέλος",
-"εν οίδα ότι ουδέν οίδα",
-"να συγχωρείς τους εχθρούς σου. Αυτό τους κάνει να σε μισούν περισσότερο",
-"ο,τι δεν λύεται κόπτεται",
-"μηδένα προ του τέλους μακάριζε",
-"τα αγαθά κόποις κτώνται",
-"οποιος ελεύθερα συλλογάται, συλλογάται καλά",
-"το δις εξαμαρτείν τ’ αυτόν ουκ ανδρός σοφού",
-"αλίμονο στη χώρα που έχει ανάγκη από ήρωες",
-"να ζει κανείς ή να μη ζει; ιδού η απορία",
-"Στους γονείς οφείλομεν το ζην, στους δε διδασκάλους το ευ ζην",
-"Αρχή ήμισυ παντός",
-"Πάντων χρημάτων μέτρον άνθρωπος",
-"Συν Αθηνά και χείρα κίνει",
-"Πείσας λαβέ, μη βιασάμενος",
-"Άνδρες γαρ πόλιος πύργος",
-"Αρχή άνδρα δείκνυσι",
-"Πάταξον μεν, άκουσον δε",
-"Το εύδαιμον το ελεύθερον, το δ’ ελεύθερον το εύψυχον",
-"Μετά πόνου η μάθησις",
-"Αισχρόν τε μοχθείν μή θέλειν νεανίαν",
-"Πνίγεσαι όχι αν πέσεις στο ποτάμι, αλλά αν παραμείνεις βυθισμένος σ’ αυτό",
+    const firstHalfQuotes = [
+"ότι δεν με σκοτώνει,",
+"ουκ εν τω πολλώ το ευ,",
+"καλύτερα ένα άθλιο τέλος,",
+"εν οίδα ότι,",
+"να συγχωρείς τους εχθρούς σου,",
+"ό,τι δεν λύεται,",
+"μηδένα προ του τέλους,",
+"τα αγαθά,",
+"οποιος ελεύθερα συλλογάται,",
+"αλίμονο στη χώρα,",
+"να ζει κανείς ή να μη ζει;",
+"Στους γονείς οφείλομεν το ζην,",
+"Πάταξον μεν,",
+"Πάντων χρημάτων,",
+"Η δύναμη ελκύει πάντα,",
+"Η διαφορά με έναν τρελό,",
+"Το μέλλον ανήκει σ'αυτούς,",
+"Οι τοίχοι που χτίζουμε γύρω μας,",
+"Όλα τα κυπαρίσσια δείχνουνε μεσάνυχτα,",
+"Το μόνο που πρέπει να αποφασίσουμε είναι,",
+"Αν κοιτάξεις για πολλή ώρα την άβυσσο,",
+"Η αγάπη μοιάζει με ατμό,",
+"Η ευτυχία δεν είναι παρά",
+"Τι θα πει ευτυχία;",
+"Έχεις λύπη;",
+"Από το τέλος ξεπηδούν,",
+"Στη μέση του χειμώνα",
+"Η λύπη ομορφάινει,",
+"Όταν μιλάει η αταξία,",
+"Αν κάποιες φορές χάνεσαι,",
+"Καιρός πια να μάθεις,",
+"Σ'αγαπάω αλλά,",
+"",
+    ];
 
+    const secondHalfQuotes = [
+"με κάνει πιο δυνατό.",
+"αλλ’ εν τω ευ το πολύ.",
+"παρά μια αθλιότητα χωρίς τέλος.",
+"ουδέν οίδα.",
+"αυτό τους κάνει να σε μισούν περισσότερο.",
+"κόπτεται.",
+"μακάριζε.",
+"κόποις κτώνται.",
+"συλλογάται καλά.",
+"που έχει ανάγκη από ήρωες.",
+"ιδού η απορία.",
+"στους δε διδασκάλους το ευ ζην.",
+"άκουσον δε.",
+"μέτρον άνθρωπος.",
+"ανθρώπους με χαμηλή ηθική.",
+"είναι ότι εγώ δεν είμαι τρελός.",
+"που πιστεύουν στα όνειρα τους.",
+"κρατούν τη χαρά απ'έξω.",
+"όλα τα δάχτυλα σιωπή.",
+"τι θα κάνουμε με το χρόνο που μας έχει δοθεί.",
+"στο τέλος κι η άβυσσος θα κοιτάξει εσένα",
+"όσο πιέζεται τόσο πιο δυνατή γίνεται.",
+"καλή υγεία και ασθενής μνήμη.",
+"ζήσε όλες τις δυστυχίες.",
+"ο Θεός σου λείπει.",
+"καινούργιες αρχές.",
+"υπάρχει μέσα μου καλοκαίρι.",
+"επειδή της μοιάζουμε.",
+"η τάξη σωπαίνει.",
+"ακολούθα την καρδιά σου.",
+"να μην περιμένεις.",
+"",
     ];
 
     const names = [
@@ -71,39 +191,138 @@
 "Πλατων",
 "Αίσωπος",
 "Δημοσθένης",
-"Θεμιστοκλής",
-"Αλκαίος",
-"Αντισθένης",
-"Σοφοκλής",
-"Ευριπίδης",
-"Πάουλο Κοέλιο",
+"Αϊνστάιν",
+"Νταλί",
+"Ρούσβελτ",
+"Ρων",
+"Ελύτης",
+"Τόλκιν",
+"Νίτσε",
+"Ουγκώ",
+"Σβάιτσερ",
+"Καζαντζάκης",
+"Παΐσιος",
+"Πλίνιος",
+"Καμύ",
+"Άγνωστος",
+"Άγνωστος",
     ];
 
+    const imageUrls = [
+"image1.jpg",
+"image10.jpg",
+"image11.jpg",
+"image12.jpg",
+"image13.jpg",
+"image14.jpg",
+"image15.jpg",
+"image16.jpg",
+"image17.jpg",
+"image18.jpg",
+"image19.jpg",
+"image2.jpg",
+"image20.jpg",
+"image21.jpg",
+"image22.jpg",
+"image23.jpg",
+"image24.jpg",
+"image25.jpg",
+"image26.jpg",
+"image27.jpg",
+"image28.jpg",
+"image29.jpg",
+"image3.jpg",
+"image30.jpg",
+"image31.jpg",
+"image32.jpg",
+"image33.jpg",
+"image34.jpg",
+"image35.jpg",
+"image36.jpg",
+"image37.jpg",
+"image38.jpg",
+"image39.jpg",
+"image4.jpg",
+"image40.jpg",
+"image41.jpg",
+"image42.jpg",
+"image43.jpg",
+"image44.jpg",
+"image45.jpg",
+"image46.jpg",
+"image5.jpg",
+"image6.jpg",
+"image7.jpg",
+"image8.jpg",
+"image9.jpg",
+"image47.jpg",
+"image48.jpg",
+"image49.jpg",
+"image50.jpg",
+"image51.jpg",
+"image52.jpg",
+"image53.jpg",
+"image54.jpg",
+"image55.jpg",
+"image56.jpg",
+"image57.jpg",
+"image58.jpg",
+"image59.jpg",
+"image60.jpg",
+"image61.jpg",
+"image62.jpg",
+"image63.jpg",
+"image64.jpg",
+"image65.jpg",
+"image66.jpg",
+"image67.jpg",
+"image68.jpg",
+"image69.jpg",
+"image70.jpg",
+"image71.jpg",
+"image72.jpg",
+"image73.jpg",
+"image74.jpg",
+"image75.jpg",
+"image76.jpg",
+"image77.jpg",
+"image78.jpg",
+"image79.jpg",
+"image80.jpg",
+"image81.jpg",
+"image82.jpg",
+"image83.jpg",
+"image84.jpg",
+"image85.jpg",
+"image86.jpg",
+"image87.jpg",
+"image88.jpg",
+"image89.jpg",
+"image90.jpg",
+"image91.jpg",
+      // Add more image URLs as needed
+    ];
 
-    const minWordsToShow = 3;
-    const maxWordsToShow = 7;
     let combinedQuote = "";
 
     function capitalizeFirstLetter(word) {
       return word.charAt(0).toUpperCase() + word.slice(1);
     }
 
+    function generateCombinedQuote() {
+      combinedQuote = "";
+      const firstHalf = firstHalfQuotes[Math.floor(Math.random() * firstHalfQuotes.length)];
+      const secondHalf = secondHalfQuotes[Math.floor(Math.random() * secondHalfQuotes.length)];
+      const name = names[Math.floor(Math.random() * names.length)];
+      const imageUrl = imageUrls[Math.floor(Math.random() * imageUrls.length)];
 
+      combinedQuote = capitalizeFirstLetter(firstHalf) + " " + secondHalf + "\n" + name;
 
-   function generateCombinedQuote() {
-  combinedQuote = "";
-  const wordsToShow = Math.floor(Math.random() * (maxWordsToShow - minWordsToShow + 1)) + minWordsToShow;
-  
-  for (let i = 0; i < wordsToShow; i++) {
-    const parts = quotes[Math.floor(Math.random() * quotes.length)].split(" ");
-    const randomWord = capitalizeFirstLetter(parts[Math.floor(Math.random() * parts.length)]);
-    combinedQuote += randomWord + " ";
-  }
-  
-  combinedQuote = combinedQuote.trim();
-  combinedQuote += " - " + names[Math.floor(Math.random() * names.length)];
-  updateQuote();
-}
+      // Set the background image
+      document.getElementById("background-image").src = imageUrl;
+
+      updateQuote();
+    }
 
     function updateQuote() {
       const quoteContainer = document.getElementById("quote-container");
@@ -115,15 +334,42 @@
       updateQuote();
     }
 
-    window.onload = function() {
+    window.onload = function () {
       generateCombinedQuote();
-      
     };
 
-    document.addEventListener("DOMContentLoaded", function() {
-      document.body.addEventListener("click", mousePressed);
-      document.body.addEventListener("wheel", generateCombinedQuote);
+var myDiv = document.getElementById('mainapp');//kane ta ena meta
+//var mainApp = document.getElementById("mainapp");
+var screenshotButton = document.getElementById("screenshotButton");
+
+    document.addEventListener("DOMContentLoaded", function () {
+	myDiv.addEventListener('click', mousePressed);
+	myDiv.addEventListener('wheel', mousePressed);
+      //document.body.addEventListener("click", mousePressed); //se olo to soma klik kai skrol
+      //document.body.addEventListener("wheel", generateCombinedQuote);
     });
+	    document.addEventListener("DOMContentLoaded", function() {
+        // Get the element with the id "mainapp"
+        //var mainApp = document.getElementById("mainapp");
+	screenshotButton.addEventListener("click", function() {
+        // Use html2canvas to capture the screenshot
+        html2canvas(myDiv).then(function(canvas) {
+            // Convert the canvas to a data URL representing a JPEG image
+            var dataURL = canvas.toDataURL("image/jpeg");
+
+            // Create a link element to download the image
+            var a = document.createElement("a");
+            a.href = dataURL;
+            a.download = "screenshot.jpg";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+			
+			});
+			
+        });
+    });
+	
   </script>
 </body>
 </html>
