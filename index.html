@@ -353,9 +353,7 @@ var screenshotButton = document.getElementById("screenshotButton");
         //var mainApp = document.getElementById("mainapp");
 	screenshotButton.addEventListener("click", function() {
         // Use html2canvas to capture the screenshot
-        html2canvas(myDiv, {
-		allowTaint: true
-	}).then(function(canvas) {
+        html2canvas(myDiv, { allowTaint: true } ).then(function(canvas) {
             // Convert the canvas to a data URL representing a JPEG image
             var dataURL = canvas.toDataURL("image/jpeg");
 
