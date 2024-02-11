@@ -358,6 +358,8 @@ var screenshotButton = document.getElementById("screenshotButton");
             var dataURL = canvas.toDataURL("image/jpeg");
 
             // Create a link element to download the image
+	    allowTaint : true;
+   	    useCors : true;
             var a = document.createElement("a");
             a.href = dataURL;
             a.download = "screenshot.jpg";
